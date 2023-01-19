@@ -34,16 +34,6 @@ export class App extends Component {
     }));
   };
 
-  // componentDidUpdate(_, prevState) {
-  //   if (
-  //     prevState.page !== this.state.page ||
-  //     prevState.query !== this.state.query
-  //   ) {
-  //     console.log('тут фетч');
-  //     getImages(this.state.query, this.state.page);
-  //   }
-  // }
-
   render() {
     return (
       <Container>
@@ -54,3 +44,13 @@ export class App extends Component {
     );
   }
 }
+
+// componentDidUpdate(_, prevState) {
+//   if (
+//     prevState.page !== this.state.page ||
+//     prevState.query !== this.state.query
+//   ) {
+//     console.log('тут фетч');
+//     getImages(this.state.query, this.state.page);
+//   }
+// }
