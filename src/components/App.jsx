@@ -47,8 +47,9 @@ export class App extends Component {
   render() {
     return (
       <Container>
+        {console.log(this.state.items)}
         <Searchbar onSubmit={this.handleSearch} />
-        <ImageGallery gallery={this.state.items} />
+        {this.state.items && <ImageGallery gallery={this.state.items} />}
       </Container>
     );
   }
