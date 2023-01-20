@@ -16,7 +16,7 @@ export const ImageGallery = ({ items }) => (
 );
 
 ImageGallery.propTypes = {
-  gallery: PropTypes.arrayOf(
+  items: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number.isRequired,
       webformatURL: PropTypes.string.isRequired,

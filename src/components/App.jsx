@@ -30,7 +30,7 @@ export class App extends Component {
             isLoading: false,
           }));
         })
-        .catch(error => console.log(error));
+        .catch(error => toast.error('Oops, something went wrong'));
     }
   }
 
@@ -56,9 +56,9 @@ export class App extends Component {
       <Container>
         <Toaster position="top-right" reverseOrder={false} />
         <Searchbar onSubmit={this.handleSearch} isSubmiting={isLoading} />
-        {this.state.items.length > 0 && <ImageGallery items={items} />}
+        {items.length > 0 && <ImageGallery items={items} />}
         <Loader>
-          {this.state.isLoading && (
+          {isLoading && (
             <ThreeDots
               height="80"
               width="80"
@@ -72,7 +72,7 @@ export class App extends Component {
             />
           )}
         </Loader>
-        {this.state.items.length > 0 && <LoadMoreBtn onClick={this.loadMore} />}
+        {items.length > 0 && <LoadMoreBtn onClick={this.loadMore} />}
       </Container>
     );
   }

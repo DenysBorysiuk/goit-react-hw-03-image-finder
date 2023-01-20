@@ -16,7 +16,8 @@ const initialValues = {
 };
 
 export const Searchbar = ({ onSubmit, isSubmiting }) => {
-  const handleSubmit = ({ query }, { resetForm }) => {
+  const handleSubmit = (values, { resetForm }) => {
+    const query = values.query.trim();
     if (!query) {
       return toast.error('Empty search');
     }
