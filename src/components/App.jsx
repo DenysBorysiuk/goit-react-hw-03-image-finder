@@ -16,19 +16,17 @@ export class App extends Component {
   };
 
   componentDidUpdate(_, prevState) {
-    if (
-      prevState.page !== this.state.page ||
-      prevState.query !== this.state.query
-    ) {
+    const { page, query } = this.state;
+    if (prevState.page !== page || prevState.query !== query) {
       this.setState({ isLoading: true });
-      getImages(this.state.query, this.state.page)
+      getImages(query, page)
         .then(resp => {
           if (!resp.data.totalHits) {
             this.setState({ isLoading: false });
-            return toast.error('Input correct query');
+            return toast.error('Enter correct query');
           }
-          this.setState(prevState => ({
-            items: [...prevState.items, ...resp.data.hits],
+          this.setState(({ items }) => ({
+            items: [...items, ...resp.data.hits],
             isLoading: false,
           }));
         })
