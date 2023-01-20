@@ -2,15 +2,17 @@ import React, { Component } from 'react';
 import { Searchbar } from './Searchbar/Searchbar';
 import { ImageGallery } from './ImageGallery/ImageGallery';
 import { getImages } from 'services/api';
-import { Container } from './App.styled';
+import { Container, Loader } from './App.styled';
 import toast, { Toaster } from 'react-hot-toast';
 import { LoadMoreBtn } from './Button/Button';
+import { ThreeDots } from 'react-loader-spinner';
 
 export class App extends Component {
   state = {
     page: 1,
     query: '',
     items: [],
+    isLoading: false,
   };
 
   componentDidUpdate(_, prevState) {
@@ -18,13 +20,16 @@ export class App extends Component {
       prevState.page !== this.state.page ||
       prevState.query !== this.state.query
     ) {
+      this.setState({ isLoading: true });
       getImages(this.state.query, this.state.page)
         .then(resp => {
           if (!resp.data.totalHits) {
+            this.setState({ isLoading: false });
             return toast.error('Input correct query');
           }
           this.setState(prevState => ({
             items: [...prevState.items, ...resp.data.hits],
+            isLoading: false,
           }));
         })
         .catch(error => console.log(error));
@@ -32,11 +37,13 @@ export class App extends Component {
   }
 
   handleSearch = query => {
-    this.setState(state => ({
-      page: 1,
-      query,
-      items: [],
-    }));
+    if (query !== this.state.query) {
+      this.setState(state => ({
+        page: 1,
+        query,
+        items: [],
+      }));
+    }
   };
 
   loadMore = () => {
@@ -46,14 +53,27 @@ export class App extends Component {
   };
 
   render() {
+    const { items, isLoading } = this.state;
     return (
       <Container>
         <Toaster position="top-right" reverseOrder={false} />
-
-        <Searchbar onSubmit={this.handleSearch} />
-        {this.state.items.length > 0 && (
-          <ImageGallery gallery={this.state.items} />
-        )}
+        <Searchbar onSubmit={this.handleSearch} isSubmiting={isLoading} />
+        {this.state.items.length > 0 && <ImageGallery items={items} />}
+        <Loader>
+          {this.state.isLoading && (
+            <ThreeDots
+              height="80"
+              width="80"
+              radius="9"
+              color="#3f51b5"
+              ariaLabel="three-dots-loading"
+              wrapperStyle={{}}
+              wrapperClassName=""
+              visible={true}
+              justifyContent="center"
+            />
+          )}
+        </Loader>
         {this.state.items.length > 0 && <LoadMoreBtn onClick={this.loadMore} />}
       </Container>
     );

@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { Form, Field, ErrorMessage } from 'formik';
+import { Form, Field } from 'formik';
 
 export const Header = styled.header`
   top: 0;
@@ -44,15 +44,6 @@ export const Input = styled(Field)`
     font: inherit;
     font-size: 18px;
   }
-`;
-
-export const Message = styled(ErrorMessage)`
-  position: absolute;
-  display: block;
-  top: 45px;
-  left: 0;
-  color: red;
-  font-size: 11px;
 `;
 
 export const FormBtn = styled.button`

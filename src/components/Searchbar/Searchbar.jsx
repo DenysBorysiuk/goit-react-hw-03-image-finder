@@ -15,7 +15,7 @@ const initialValues = {
   query: '',
 };
 
-export const Searchbar = ({ onSubmit }) => {
+export const Searchbar = ({ onSubmit, isSubmiting }) => {
   const handleSubmit = ({ query }, { resetForm }) => {
     if (!query) {
       return toast.error('Empty search');
@@ -29,7 +29,7 @@ export const Searchbar = ({ onSubmit }) => {
       <Toaster position="top-right" reverseOrder={false} />
       <Formik initialValues={initialValues} onSubmit={handleSubmit}>
         <FormWrap>
-          <FormBtn type="submit">
+          <FormBtn type="submit" disabled={isSubmiting}>
             <SearchIcon width="20" height="20" />
             <FormBtnLabel>Search</FormBtnLabel>
           </FormBtn>
@@ -47,5 +47,6 @@ export const Searchbar = ({ onSubmit }) => {
 };
 
 Searchbar.propTypes = {
-  getImages: PropTypes.func,
+  onSubmit: PropTypes.func.isRequired,
+  isSubmiting: PropTypes.bool.isRequired,
 };
