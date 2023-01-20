@@ -1,5 +1,7 @@
 import { Formik } from 'formik';
 import PropTypes from 'prop-types';
+import toast, { Toaster } from 'react-hot-toast';
+
 import {
   Header,
   FormWrap,
@@ -16,7 +18,7 @@ const initialValues = {
 export const Searchbar = ({ onSubmit }) => {
   const handleSubmit = ({ query }, { resetForm }) => {
     if (!query) {
-      return alert('пусто');
+      return toast.error('Empty search');
     }
     onSubmit(query);
     resetForm();
@@ -24,6 +26,7 @@ export const Searchbar = ({ onSubmit }) => {
 
   return (
     <Header>
+      <Toaster position="top-right" reverseOrder={false} />
       <Formik initialValues={initialValues} onSubmit={handleSubmit}>
         <FormWrap>
           <FormBtn type="submit">

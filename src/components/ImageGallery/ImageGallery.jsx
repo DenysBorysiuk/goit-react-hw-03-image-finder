@@ -4,7 +4,7 @@ import { List } from './ImageGallery.styled';
 
 export const ImageGallery = ({ gallery }) => (
   <List>
-    {console.log(gallery)}
+    {/* {console.log(gallery)} */}
     {gallery.map(({ id, webformatURL, largeImageURL, tags }) => (
       <ImageGalleryItem
         key={id}

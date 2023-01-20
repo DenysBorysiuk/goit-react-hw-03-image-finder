@@ -3,6 +3,8 @@ import { Searchbar } from './Searchbar/Searchbar';
 import { ImageGallery } from './ImageGallery/ImageGallery';
 import { getImages } from 'services/api';
 import { Container } from './App.styled';
+import toast, { Toaster } from 'react-hot-toast';
+import { LoadMoreBtn } from './Button/Button';
 
 export class App extends Component {
   state = {
@@ -11,46 +13,49 @@ export class App extends Component {
     items: [],
   };
 
-  handleSearch = async query => {
-    try {
-      const gallery = await getImages(query, this.state.page);
-      // console.log(gallery.data);
-      if (!gallery.data.totalHits) {
-        return alert('ничего не нашлось');
-      }
-
-      this.setState(state => ({
-        query,
-        items: [...gallery.data.hits],
-      }));
-    } catch (error) {
-      console.log(error);
+  componentDidUpdate(_, prevState) {
+    if (
+      prevState.page !== this.state.page ||
+      prevState.query !== this.state.query
+    ) {
+      getImages(this.state.query, this.state.page)
+        .then(resp => {
+          if (!resp.data.totalHits) {
+            return toast.error('Input correct query');
+          }
+          this.setState(prevState => ({
+            items: [...prevState.items, ...resp.data.hits],
+          }));
+        })
+        .catch(error => console.log(error));
     }
+  }
+
+  handleSearch = query => {
+    this.setState(state => ({
+      page: 1,
+      query,
+      items: [],
+    }));
   };
 
   loadMore = () => {
-    this.setState(prevState => ({
-      page: prevState.page + 1,
+    this.setState(({ page }) => ({
+      page: page + 1,
     }));
   };
 
   render() {
     return (
       <Container>
-        {console.log(this.state.items)}
+        <Toaster position="top-right" reverseOrder={false} />
+
         <Searchbar onSubmit={this.handleSearch} />
-        {this.state.items && <ImageGallery gallery={this.state.items} />}
+        {this.state.items.length > 0 && (
+          <ImageGallery gallery={this.state.items} />
+        )}
+        {this.state.items.length > 0 && <LoadMoreBtn onClick={this.loadMore} />}
       </Container>
     );
   }
 }
-
-// componentDidUpdate(_, prevState) {
-//   if (
-//     prevState.page !== this.state.page ||
-//     prevState.query !== this.state.query
-//   ) {
-//     console.log('тут фетч');
-//     getImages(this.state.query, this.state.page);
-//   }
-// }
