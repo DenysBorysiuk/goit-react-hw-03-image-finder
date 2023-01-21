@@ -1,7 +1,5 @@
 import axios from 'axios';
 
-// axios.defaults.baseURL = 'https://pixabay.com/api/';
-
 export const getImages = async (searchQuery, page) => {
   const response = await axios.get(`https://pixabay.com/api/`, {
     params: {
