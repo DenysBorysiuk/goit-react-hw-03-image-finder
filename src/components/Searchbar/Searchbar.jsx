@@ -24,7 +24,7 @@ export const Searchbar = ({ onSubmit, isSubmiting }) => {
       <Formik initialValues={initialValues} onSubmit={handleSubmit}>
         <FormWrap>
           <FormBtn type="submit" disabled={isSubmiting}>
-            <BsSearch size="2em" />
+            <BsSearch size="1.5em" />
           </FormBtn>
           <Input
             type="text"
