@@ -1,7 +1,7 @@
 import { Formik } from 'formik';
 import PropTypes from 'prop-types';
 import toast, { Toaster } from 'react-hot-toast';
-
+import { ReactComponent as SearchIcon } from 'icons/search.svg';
 import {
   Header,
   FormWrap,
@@ -9,7 +9,6 @@ import {
   FormBtn,
   FormBtnLabel,
 } from './Searchbar.styled';
-import { ReactComponent as SearchIcon } from 'icons/search.svg';
 
 const initialValues = {
   query: '',
