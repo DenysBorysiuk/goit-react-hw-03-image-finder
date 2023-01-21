@@ -1,14 +1,8 @@
 import { Formik } from 'formik';
 import PropTypes from 'prop-types';
 import toast, { Toaster } from 'react-hot-toast';
-import { ReactComponent as SearchIcon } from 'icons/search.svg';
-import {
-  Header,
-  FormWrap,
-  Input,
-  FormBtn,
-  FormBtnLabel,
-} from './Searchbar.styled';
+import { BsSearch } from 'react-icons/bs';
+import { Header, FormWrap, Input, FormBtn } from './Searchbar.styled';
 
 const initialValues = {
   query: '',
@@ -30,8 +24,7 @@ export const Searchbar = ({ onSubmit, isSubmiting }) => {
       <Formik initialValues={initialValues} onSubmit={handleSubmit}>
         <FormWrap>
           <FormBtn type="submit" disabled={isSubmiting}>
-            <SearchIcon width="20" height="20" />
-            <FormBtnLabel>Search</FormBtnLabel>
+            <BsSearch size="2em" />
           </FormBtn>
           <Input
             type="text"
