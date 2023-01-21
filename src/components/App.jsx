@@ -13,24 +13,30 @@ export class App extends Component {
     query: '',
     items: [],
     isLoading: false,
+    imagesFound: null,
   };
 
-  componentDidUpdate(_, prevState) {
+  async componentDidUpdate(_, prevState) {
     const { page, query } = this.state;
     if (prevState.page !== page || prevState.query !== query) {
-      this.setState({ isLoading: true });
-      getImages(query, page)
-        .then(resp => {
-          if (!resp.data.totalHits) {
-            this.setState({ isLoading: false });
-            return toast.error('Enter correct query');
-          }
-          this.setState(({ items }) => ({
-            items: [...items, ...resp.data.hits],
-            isLoading: false,
-          }));
-        })
-        .catch(error => toast.error('Oops, something went wrong'));
+      try {
+        this.setState({ isLoading: true });
+        const images = await getImages(query, page);
+
+        if (!images.totalHits) {
+          this.setState({ isLoading: false });
+          return toast.error('Enter correct query');
+        }
+        this.setState(({ items }) => ({
+          items: [...items, ...images.hits],
+          isLoading: false,
+          imagesFound: images.hits.length,
+        }));
+      } catch (error) {
+        toast.error('Oops, something went wrong');
+      } finally {
+        this.setState({ isLoading: false });
+      }
     }
   }
 
@@ -40,6 +46,7 @@ export class App extends Component {
         page: 1,
         query,
         items: [],
+        imagesFound: null,
       }));
     }
   };
@@ -51,7 +58,7 @@ export class App extends Component {
   };
 
   render() {
-    const { items, isLoading } = this.state;
+    const { items, isLoading, imagesFound } = this.state;
     return (
       <Container>
         <Toaster position="top-right" reverseOrder={false} />
@@ -72,7 +79,7 @@ export class App extends Component {
             />
           )}
         </Loader>
-        {items.length > 0 && <LoadMoreBtn onClick={this.loadMore} />}
+        {imagesFound === 12 && <LoadMoreBtn onClick={this.loadMore} />}
       </Container>
     );
   }
